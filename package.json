@@ -1,0 +1,33 @@
+{
+  "name": "task-manager-node",
+  "version": "1.0.0",
+  "description": "a web app for task management",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emersonnobre/tasks-manager.git"
+  },
+  "keywords": [
+    "nodejs",
+    "js",
+    "task-system"
+  ],
+  "author": "Emerson Nobre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emersonnobre/tasks-manager/issues"
+  },
+  "homepage": "https://github.com/emersonnobre/tasks-manager#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
