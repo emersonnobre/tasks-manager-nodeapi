@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Task Manager</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+        <main class="container">
+          <header>
+            <h1 id="title">Task</h1>
+          </header>
+          <form id="single-task-form" name="single-task-form" class="form">
+            <div class="inputArea">
+              <label for="taskID">Id: </label>
+              <p id="taskID"></p>
+            </div>
+            <div class="inputArea">
+              <label for="taskName">Name: </label>
+              <input type="text" id="taskName" name="name" value="">
+            </div>
+            <div class="inputArea">
+              <label for="taskCompleted">Completed?</label>
+              <input type="checkbox" name="taskCompleted" id="taskCompleted">
+            </div>
+            <input id="update-btn" type="submit" name="submit" value="update task">
+            <button class="delete-btn" type="button" onclick="deleteTask()">delete task</button>
+          </form>
+        </main>
+        <div class="form-alert"></div>
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        ></script>
+        <script src="./js/task.js"></script>
+    </body>
+</html>

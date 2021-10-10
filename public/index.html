@@ -1,0 +1,45 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+    <head>
+        <title>Task Manager</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+        <main class="container">
+            <header>
+                <h1 id="title" >Tasks manager</h1>
+            </header>
+            
+            <form name="form" id="taskform" class="form" autocomplete="off">
+                <h2>New task</h2>
+                <div class="inputArea">
+                    <input type="text" name="description" id="description" placeholder="what is your task?" maxlength="20" required>
+                    <input type="submit" value="add task">
+                </div>
+                
+            </form>
+            <div id="tasksList">
+                <h2>List of tasks</h2>
+                <p class="loading-tasks">Loading...</p>
+                <div id="list">
+                    <div class="single-task">
+                        <!-- <div><p>zdfsdf</p></div>
+                        <a id="edit" href='../task.html?id=${taskID}'>edit</a> -->
+                    </div>
+                </div>
+                
+            </div>
+
+        </main>
+        <div class="form-alert"></div>
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        ></script>
+        <script src="./js/index.js"></script>
+    </body>
+</html>
