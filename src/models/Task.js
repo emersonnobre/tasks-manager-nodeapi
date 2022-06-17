@@ -10,6 +10,10 @@ const TaskSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    createdAt: {
+        type: Date,
+        default: new Date()
     }
 })
 
