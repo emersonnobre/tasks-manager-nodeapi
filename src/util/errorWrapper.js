@@ -1,4 +1,4 @@
-const { INTERNAL_SERVER_ERROR } = require('../enum/statusCode-enum')
+const { INTERNAL_SERVER_ERROR } = require('../enum/status-code')
 
 module.exports = async (fn, typeOfResponse) => {
     try {

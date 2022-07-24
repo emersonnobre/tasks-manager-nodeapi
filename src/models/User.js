@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
+const { hash } = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -29,6 +30,13 @@ const UserSchema = new mongoose.Schema({
             if (value < 0) throw new Error('Age must be a positive number')
         }
     }
+})
+
+UserSchema.pre('save', async function (next) {
+    if (this.isModified('password'))
+        this.password = await hash(this.password, 8)
+
+    next()
 })
 
 module.exports = mongoose.model('User', UserSchema)
