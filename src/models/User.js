@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
-const { hash } = require('bcryptjs')
+const { hash, compare } = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
+UserSchema.statics.findByEmailAndPassword = async (email, password) => {
+    const user = await User.findOne({ email })
+    if (!user) return null
+    const isMatch = await compare(password, user.password)
+    if (!isMatch) return null
+    return user
+}
+
 UserSchema.pre('save', async function (next) {
     if (this.isModified('password'))
         this.password = await hash(this.password, 8)
@@ -40,4 +48,6 @@ UserSchema.pre('save', async function (next) {
     next()
 })
 
-module.exports = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
+
+module.exports = User

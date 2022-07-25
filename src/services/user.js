@@ -1,8 +1,9 @@
 const User = require('../models/User')
 const userValidator = require('../validators/user')
+const authService = require('./authentication')
 const errorWrapper = require('../util/errorWrapper')
 const serviceResponse = require('../dto/service-response')
-const { SUCCESS, CREATED, NOCONTENT, BADREQUEST, NOTFOUND } = require('../enum/status-code')
+const { SUCCESS, CREATED, NOCONTENT, BADREQUEST, UNAUTHORIZED, NOTFOUND } = require('../enum/status-code')
 
 function get(filterObject) {
     return errorWrapper(async () => {
@@ -23,9 +24,9 @@ function save(user = {}) {
     return errorWrapper(async () => {
         const validationErrors = await userValidator.validates(user)
         if (validationErrors.length) return serviceResponse(BADREQUEST, null, validationErrors)
-        console.log('passou validacao')
         const newUser = await User.create(user)
-        return serviceResponse(CREATED, newUser)
+        const token = authService.createNewToken({ _id: newUser._id.toString() })
+        return serviceResponse(CREATED, { token })
     }, serviceResponse)
 }
 
@@ -42,9 +43,20 @@ function update(id, newUser = {}) {
     }, serviceResponse)
 }
 
+function login(email, password) {
+    return errorWrapper(async () => {
+        if (!email || !password) return serviceResponse(BADREQUEST, null, 'You must provide an e-mail and password')
+        const loggedUser = await User.findByEmailAndPassword(email, password);
+        if (!loggedUser) return serviceResponse(UNAUTHORIZED, null, 'Unable to login')
+        const token = authService.createNewToken({ _id: loggedUser._id.toString() })
+        return serviceResponse(SUCCESS, { token })
+    }, serviceResponse)
+}
+
 module.exports = {
     get,
     getById,
     save,
     update,
+    login,
 }
