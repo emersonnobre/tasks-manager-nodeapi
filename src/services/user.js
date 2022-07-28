@@ -1,14 +1,16 @@
 const User = require('../models/User')
+const userMapper = require('../models/mappers/user')
 const userValidator = require('../validators/user')
 const authService = require('./authentication')
-const errorWrapper = require('../util/errorWrapper')
+const errorWrapper = require('../util/error-wrapper')
 const serviceResponse = require('../dto/service-response')
 const { SUCCESS, CREATED, NOCONTENT, BADREQUEST, UNAUTHORIZED, NOTFOUND } = require('../enum/status-code')
 
 function get(filterObject) {
     return errorWrapper(async () => {
         const users = await User.find(filterObject)
-        return serviceResponse(SUCCESS, users)
+        const mappedUsers = users.map(userMapper.mapToResponse)
+        return serviceResponse(SUCCESS, mappedUsers)
     }, serviceResponse)
 }
 
@@ -16,7 +18,7 @@ function getById(id) {
     return errorWrapper(async () => {
         const user = await User.findById(id)
         if (!user) return serviceResponse(NOTFOUND, null)
-        return serviceResponse(SUCCESS, user)
+        return serviceResponse(SUCCESS, userMapper.mapToResponse(user))
     }, serviceResponse)
 } 
 

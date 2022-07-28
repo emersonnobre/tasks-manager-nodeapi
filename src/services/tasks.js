@@ -1,6 +1,6 @@
 const Task = require('../models/Task')
 const tasksValidator = require('../validators/tasks')
-const errorWrapper = require('../util/errorWrapper')
+const errorWrapper = require('../util/error-wrapper')
 const serviceResponse = require('../dto/service-response')
 const { SUCCESS, CREATED, BADREQUEST, NOTFOUND, NOCONTENT } = require('../enum/status-code')
 

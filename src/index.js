@@ -15,10 +15,9 @@ app.use('/api/v1/user', userRoutes)
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI)
-        console.log('connected to the db!')
-        app.listen(port, console.log(`Server is listening on port ${port}...`))
+        app.listen(port, () => console.log(`Server is listening on port ${port}...`))
     } catch(error) {
-        console.log(error)
+        console.log('Startup error', error)
     }
 }
 

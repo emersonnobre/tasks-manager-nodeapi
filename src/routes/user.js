@@ -11,9 +11,8 @@ router.post('/login', async (req, res) => {
 })
 
 router.route('/')
-    .get(authentication, async (req, res) => {
+    .get(authentication, async (_, res) => {
         const response = await get({})
-        console.log(req.user)
         return res.status(response.statusCode).json(response)
     })
     .post(async (req, res) => {
@@ -21,6 +20,10 @@ router.route('/')
         const response = await save(user)
         return res.status(response.statusCode).json(response)
     })
+
+router.get('/whoami', authentication, (req, res) => {
+    res.send(req.user)
+})
 
 router.route('/:id')
     .get(authentication, async (req, res) => {
