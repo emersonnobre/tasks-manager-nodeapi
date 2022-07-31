@@ -11,14 +11,6 @@ function get(filterObject) {
     }, serviceResponse)
 }
 
-function getById(id) {
-    return errorWrapper(async () => {
-        const task = await Task.findById(id)
-        if (!task) return serviceResponse(NOTFOUND, null)
-        return serviceResponse(SUCCESS, task)
-    }, serviceResponse)
-} 
-
 function save(task = {}) {
     return errorWrapper(async () => {
         const validationErrors = await tasksValidator.validates(task)
@@ -32,7 +24,7 @@ function update(id, incomingTask = {}) {
     return errorWrapper(async () => {
         const validationErrors = await tasksValidator.validatesForUpdate(incomingTask)
         if (validationErrors.length) return serviceResponse(BADREQUEST, null, validationErrors)
-        const currentTask = await Task.findById(id)
+        const currentTask = await Task.findOne({ _id: id, owner: incomingTask.owner })
         if (!currentTask) return serviceResponse(NOTFOUND, null)
         Object.keys(incomingTask).forEach(field => currentTask[field] = incomingTask[field])
         currentTask.save()
@@ -40,17 +32,16 @@ function update(id, incomingTask = {}) {
     })
 }
 
-function remove(id) {
+function remove(id, owner) {
     return errorWrapper(async () => {
-        const deletedTask = await Task.findByIdAndDelete(id)
+        const deletedTask = await Task.findOneAndDelete({ _id: id, owner })
         if (!deletedTask) return serviceResponse(NOTFOUND, null)
-        return serviceResponse(SUCCESS, null)
+        return serviceResponse(NOCONTENT, null)
     })
 }
 
 module.exports = {
     get,
-    getById,
     save,
     update,
     remove

@@ -1,34 +1,35 @@
 const express = require('express')
-const { get, getById, save, update, remove } = require('../services/tasks')
+const { get, save, update, remove } = require('../services/tasks')
+const authentication = require('../middleware/authentication')
 
 const router = express.Router()
 
 router.route('/')
-    .get(async (req, res) => {
-        const response = await get({})
+    .get(authentication, async (req, res) => {
+        const response = await get({ owner: req.user._id })
         return res.status(response.statusCode).json(response)
     })
-    .post(async (req, res) => {
+    .post(authentication, async (req, res) => {
         const { task } = req.body
-        const response = await save(task)
+        const response = await save({ ...task, owner: req.user._id })
         return res.status(response.statusCode).json(response)
     })
 
 router.route('/:id')
-    .get(async (req, res) => {
+    .get(authentication, async (req, res) => {
         const { id } = req.params
-        const response = await getById(id)
+        const response = await get({ _id: id, owner: req.user._id })
         return res.status(response.statusCode).json(response)
     })
-    .patch(async (req, res) => {
+    .patch(authentication, async (req, res) => {
         const { id } = req.params
         const { task } = req.body
-        const response = await update(id, task)
+        const response = await update(id, { ...task, owner: req.user._id })
         return res.status(response.statusCode).json(response)
     })
-    .delete(async (req, res) => {
+    .delete(authentication, async (req, res) => {
         const { id } = req.params
-        const response = await remove(id)
+        const response = await remove(id, req.user._id)
         return res.status(response.statusCode).json(response)
     })
 
