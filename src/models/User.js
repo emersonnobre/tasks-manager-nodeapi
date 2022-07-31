@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Task = require('./Task')
 const { isEmail } = require('validator')
 const { hash, compare } = require('bcryptjs')
 
@@ -45,6 +46,11 @@ UserSchema.pre('save', async function (next) {
     if (this.isModified('password'))
         this.password = await hash(this.password, 8)
 
+    next()
+})
+
+UserSchema.pre('remove', async function (next) {
+    await Task.deleteMany({ owner: this._id })
     next()
 })
 
