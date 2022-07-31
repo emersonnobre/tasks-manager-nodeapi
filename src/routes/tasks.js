@@ -1,12 +1,16 @@
 const express = require('express')
 const { get, save, update, remove } = require('../services/tasks')
 const authentication = require('../middleware/authentication')
+const pagination = require('../middleware/pagination')
 
 const router = express.Router()
 
 router.route('/')
-    .get(authentication, async (req, res) => {
-        const response = await get({ owner: req.user._id })
+    .get(authentication, pagination, async (req, res) => {
+        const filterObject = { owner: req.user._id }
+        if (req.query.completed)
+            filterObject.completed = req.query.completed === 'true'
+        const response = await get(filterObject, req.pagination)
         return res.status(response.statusCode).json(response)
     })
     .post(authentication, async (req, res) => {

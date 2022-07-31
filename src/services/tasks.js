@@ -4,9 +4,9 @@ const errorWrapper = require('../util/error-wrapper')
 const serviceResponse = require('../dto/service-response')
 const { SUCCESS, CREATED, BADREQUEST, NOTFOUND, NOCONTENT } = require('../enum/status-code')
 
-function get(filterObject) {
+function get(filterObject, pagination) {
     return errorWrapper(async () => {
-        const tasks = await Task.find(filterObject)
+        const tasks = await Task.find(filterObject).limit(pagination.limit).skip(pagination.skip)
         return serviceResponse(SUCCESS, tasks)
     }, serviceResponse)
 }
