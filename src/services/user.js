@@ -55,10 +55,30 @@ function login(email, password) {
     }, serviceResponse)
 }
 
+function updateAvatar(userId, avatarBuffer) {
+    return errorWrapper(async () => {
+        if (!avatarBuffer) return serviceResponse(BADREQUEST, null, 'You must provide an avatar image!')
+        const user = await User.findById(userId)
+        user.avatar = avatarBuffer
+        await user.save()
+        return serviceResponse(SUCCESS, null)
+    }, serviceResponse)
+}
+
+function getAvatar(userId) {
+    return errorWrapper(async () => {
+        const user = await User.findById(userId)
+        if (!user || !user.avatar) return serviceResponse(NOTFOUND, null)
+        return serviceResponse(SUCCESS, user.avatar)
+    }, serviceResponse)
+}
+
 module.exports = {
     get,
     getById,
     save,
     update,
     login,
+    updateAvatar,
+    getAvatar,
 }
