@@ -1,6 +1,9 @@
 const express = require('express')
+const connect = require('./db/connect')
 const tasksRoutes = require('./routes/tasks')
 const userRoutes = require('./routes/user')
+
+connect().then(() => console.log('connected to database'))
 
 const app = express()
 

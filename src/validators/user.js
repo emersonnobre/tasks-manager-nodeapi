@@ -1,18 +1,13 @@
 const User = require('../models/User')
 
 async function validates(user) {
-    const errors = []
+    let errors = []
     const fields = Object.keys(user)
     const requiredFields = ['name', 'email', 'password']
-    const missingFields = requiredFields.filter(required => !fields.includes(required))
-    const complementaryFields = ['age']
-    const invalidFields = fields.filter(field => !requiredFields.includes(field) && !complementaryFields.includes(field))
-    const validationErrorsFromModel = await User.validate(user).then(() => null).catch(err => err)
+    const missingFields = requiredFields.filter(required => !fields.includes(required) || (fields.includes(required) && user[required] == ''))
     
     if (!fields.length) errors.push('You must provide a user field with the properties within')
-    if (missingFields.length) errors.push(`Missing fields: ${missingFields}`)
-    if (invalidFields.length) errors.push(`Invalid fields for save: ${invalidFields}`)
-    if (validationErrorsFromModel) errors.push(validationErrorsFromModel)
+    if (missingFields.length) errors = missingFields.map(field => `Missing field: ${field}`)
     
     return errors
 }

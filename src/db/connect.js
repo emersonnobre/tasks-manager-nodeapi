@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-module.exports = (url) => mongoose.connect(url, { 
+module.exports = () => mongoose.connect(process.env.MONGO_URI, { 
     directConnection: true,
     tls: true,
     tlsCAFile: 'rds-combined-ca-bundle.pem',
