@@ -1,20 +1,9 @@
 const express = require('express')
-const multer = require('multer')
 const { get, save, update, login, updateAvatar, getAvatar } = require('../services/user')
 const authentication = require('../middleware/authentication')
+const upload = require('../middleware/multer')
 
 const router = express.Router()
-
-const upload = multer({ 
-    limits: {
-        fileSize: 1000000
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(png|jpg|jpeg)$/))
-            return cb(new Error('Only images are accepted!'))
-        return cb(undefined, true)
-    }
-})
 
 router.get('/', authentication, async (_, res) => {
     const response = await get({})
@@ -48,7 +37,7 @@ router.route('/me/avatar')
         const avatarBuffer = req.file.buffer
         const response = await updateAvatar(req.user._id, avatarBuffer)
         res.status(response.statusCode).json(response)
-    }, (error, req, res, next) => {
+    }, (error, _req, res, _next) => {
         res.status(400).json({ error: error.message})
     })
     .get(authentication, async (req, res) => {
